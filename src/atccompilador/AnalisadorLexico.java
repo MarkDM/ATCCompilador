@@ -39,7 +39,7 @@ public class AnalisadorLexico {
             //Se começa com ' então avança até achar a próxima ', aí então conta tudo como string
             if (codigo[i].startsWith("'")) {
                 el.getEstruturaTipos().add(Tipos.STRING);
-                html += "<span style=\"color:green;\">";
+                html += "<span style=\"color:#FF8F40;\">";
 
                 while (i < codigo.length) {
 
@@ -86,7 +86,7 @@ public class AnalisadorLexico {
 
             if (isVariavel) {
                 el.getEstruturaTipos().add(Tipos.VARIAVEL);
-                html += "<span style=\"color:#FF8F40;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+                html += "<span style=\"color:green;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
             }
 
             blankSpace = false;
