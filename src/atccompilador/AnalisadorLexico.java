@@ -74,7 +74,7 @@ public class AnalisadorLexico {
             //Verifica se o texto atual está contido no array de palavras reservadas
             boolean isKeyWord = Arrays.asList(compilador.getPalavrasReservadas()).contains(codigo[i].toLowerCase());
             //Verifica se é numero através de REGEX
-            boolean isNumber = codigo[i].matches("^\\d*[.|,]{0,1}\\d*$");
+            boolean isNumber = codigo[i].matches("^-?\\d*([\\.,]\\d+)?$");
             //Verifica se é um sinal de igual
             boolean isAtribuicao = codigo[i].equals("=");
 
