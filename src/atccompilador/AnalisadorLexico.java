@@ -70,7 +70,7 @@ public class AnalisadorLexico {
             //Verifica se o texto atual está contido no array de palavras reservadas
             boolean isKeyWord = Arrays.asList(compilador.getPalavrasReservadas()).contains(codigo[i].toLowerCase());
             //Verifica se é numero através de REGEX
-            boolean isNumber = codigo[i].matches("^[0-9]*[.]{0,1}[0-9]*$");
+            boolean isNumber = codigo[i].matches("^\\d*[.|,]{0,1}\\d*$");
             //Se não é nada acima, então é variável
             boolean isVariavel = !isKeyWord && !isNumber;
 

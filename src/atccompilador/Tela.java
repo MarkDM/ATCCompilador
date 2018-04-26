@@ -127,7 +127,7 @@ public class Tela extends javax.swing.JFrame {
 
     private void analiseLexica() {
         Compilador compiler = new Compilador();
-        String[] palavrasReservadas = {"inicio", "fimInicio", "var", "se", "entao", "fimSe","senao","senao se"};
+        String[] palavrasReservadas = {"inicio", "fimInicio", "var", "se", "entao", "fimSe","senao","senao se","escreva"};
         compiler.setPalavrasReservadas(palavrasReservadas);
 
         AnalisadorLexico al = new AnalisadorLexico();
@@ -164,7 +164,7 @@ public class Tela extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Tela t = new Tela();
-                t.txtCodigo.setText("'Teste de string' INICIAR SE variavel ENTAO ESCREVA 'variável' numero = 22.55");
+                t.txtCodigo.setText("'Teste de string' INICIO SE variavel ENTAO ESCREVA 'variável' numero = 22.55");
                 t.setVisible(true);
             }
         });
