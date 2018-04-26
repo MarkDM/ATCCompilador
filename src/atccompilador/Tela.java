@@ -127,7 +127,7 @@ public class Tela extends javax.swing.JFrame {
 
     private void analiseLexica() {
         Compilador compiler = new Compilador();
-        String[] palavrasReservadas = {"inicio", "fimInicio", "var", "se", "entao", "fimSe","senao","senao se","escreva"};
+        String[] palavrasReservadas = {"inicio", "fimInicio", "var", "se", "entao", "fimSe","senao","senao se","escreva","fimse"};
         compiler.setPalavrasReservadas(palavrasReservadas);
 
         AnalisadorLexico al = new AnalisadorLexico();

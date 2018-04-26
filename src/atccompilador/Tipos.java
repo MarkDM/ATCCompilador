@@ -5,11 +5,13 @@
  */
 package atccompilador;
 
+
+
 /**
  *
  * @author marcu
  */
 public enum Tipos {
 
-    KEY_WORD, VARIAVEL, STRING, NUMBER;
+    KEY_WORD, VARIAVEL, STRING, NUMBER, OPERADOR_ATRIBUICAO,INICIO,FIM,OPERADOR_CONDICIONAL;
 }
