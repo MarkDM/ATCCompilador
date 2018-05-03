@@ -5,19 +5,22 @@
  */
 package atccompilador;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author marcu
  */
 public class Compilador {
 
-    private String[] palavrasReservadas;
+    private ArrayList<String> palavrasReservadas;
 
-    public String[] getPalavrasReservadas() {
+    public ArrayList<String> getPalavrasReservadas() {
         return palavrasReservadas;
     }
 
-    public void setPalavrasReservadas(String[] palavrasReservadas) {
+    public void setPalavrasReservadas(ArrayList<String> palavrasReservadas) {
         this.palavrasReservadas = palavrasReservadas;
     }
 

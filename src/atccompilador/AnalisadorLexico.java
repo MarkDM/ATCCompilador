@@ -66,13 +66,13 @@ public class AnalisadorLexico {
 
                 html += "</span>";
             }
-            
+
             if (codigo[i].isEmpty()) {
                 continue;
             }
 
             //Verifica se o texto atual está contido no array de palavras reservadas
-            boolean isKeyWord = Arrays.asList(compilador.getPalavrasReservadas()).contains(codigo[i].toLowerCase());
+            boolean isKeyWord = compilador.getPalavrasReservadas().contains(codigo[i].toLowerCase());
             //Verifica se é numero através de REGEX
             boolean isNumber = codigo[i].matches("^-?\\d*([\\.,]\\d+)?$");
             //Verifica se é um sinal de igual
@@ -83,10 +83,15 @@ public class AnalisadorLexico {
             boolean isInicio = codigo[i].toLowerCase().equals("inicio");
             boolean isFinal = codigo[i].toLowerCase().equals("fim");
 
-            //Se não é nada acima, então é variável
-            boolean isVariavel = !isKeyWord && !isNumber && !isAtribuicao && !isOperadorCondicional && !isFinal && !isInicio;
+            boolean isSe = codigo[i].toLowerCase().equals("se");
+            boolean isEntao = codigo[i].toLowerCase().equals("entao");
+            boolean isFimSe = codigo[i].toLowerCase().equals("fimse");
 
-            if (isKeyWord && !isFinal && !isInicio) {
+            //Se não é nada acima, então é variável
+            boolean isVariavel = !isKeyWord && !isNumber && !isAtribuicao && !isOperadorCondicional && !isFinal && !isInicio
+                    && !isSe && !isEntao && !isFimSe;
+
+            if (isKeyWord && !isFinal && !isInicio && !isSe && !isEntao && !isFimSe) {
                 el.getEstruturaTipos().add(Tipos.KEY_WORD);
                 html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
             }
@@ -113,12 +118,27 @@ public class AnalisadorLexico {
 
             if (isInicio && isKeyWord) {
                 el.getEstruturaTipos().add(Tipos.INICIO);
-                html += "<span style=\"color:black;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+                html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
             }
-            
+
             if (isFinal && isKeyWord) {
                 el.getEstruturaTipos().add(Tipos.FIM);
-                html += "<span style=\"color:black;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+                html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+            }
+
+            if (isSe && isKeyWord) {
+                el.getEstruturaTipos().add(Tipos.SE);
+                html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+            }
+
+            if (isEntao && isKeyWord) {
+                el.getEstruturaTipos().add(Tipos.ENTAO);
+                html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+            }
+
+            if (isFimSe && isKeyWord) {
+                el.getEstruturaTipos().add(Tipos.FIMSE);
+                html += "<span style=\"color:blue;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
             }
 
             blankSpace = false;
