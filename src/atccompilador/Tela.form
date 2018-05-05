@@ -77,6 +77,9 @@
         <Component class="javax.swing.JTextPane" name="txtCodigo">
           <Properties>
             <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Consolas" size="18" style="0"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

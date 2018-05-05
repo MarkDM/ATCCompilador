@@ -6,9 +6,14 @@
 package atccompilador;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
@@ -26,6 +31,10 @@ import javax.swing.text.html.StyleSheet;
 public class Tela extends javax.swing.JFrame {
 
     DefaultListModel<String> dlmPalavrasReservadas = new DefaultListModel();
+    Long ultimaVezDigitou = System.currentTimeMillis();
+    boolean digitando = false;
+    boolean analisando = false;
+
     ArrayList<String> palavrasReservadas = new ArrayList<String>() {
         {
             add("inicio");
@@ -42,6 +51,40 @@ public class Tela extends javax.swing.JFrame {
 
         atualizarLista(this.palavrasReservadas);
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//
+//                    Long now = System.currentTimeMillis();
+//                    if (now - ultimaVezDigitou > 1000) {
+//                        digitando = false;
+//                        System.out.println("Parou de digitar: tempo sem digitar " + String.valueOf(now - ultimaVezDigitou) + " ms");
+//                        try {
+//
+//                            analiseLexica();
+//
+//                            Thread.sleep(500);
+//                        } catch (InterruptedException ex) {
+//                            Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//                }
+//            }
+//        }).start();
+        txtCodigo.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                ultimaVezDigitou = System.currentTimeMillis();
+                digitando = true;
+                analisando = false;
+                System.out.println("digitou");
+
+            }
+            public void keyPressed(KeyEvent e) { }
+            public void keyReleased(KeyEvent e) {}
+        });
+
         txtCodigo.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "AnaliseLexica");
         txtCodigo.getActionMap().put("AnaliseLexica", new AbstractAction() {
             @Override
@@ -49,7 +92,6 @@ public class Tela extends javax.swing.JFrame {
                 analiseLexica();
             }
         });
-
     }
 
     private void atualizarLista(ArrayList<String> elementos) {
@@ -76,6 +118,7 @@ public class Tela extends javax.swing.JFrame {
         setResizable(false);
 
         txtCodigo.setContentType("text/html"); // NOI18N
+        txtCodigo.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         jScrollPane1.setViewportView(txtCodigo);
 
         jList1.setModel(dlmPalavrasReservadas);
@@ -199,6 +242,11 @@ public class Tela extends javax.swing.JFrame {
     }
 
     private void analiseLexica() {
+
+//        if (digitando || analisando) {
+//            return;
+//        }
+//        analisando = true;
         Compilador compiler = new Compilador();
 
         compiler.setPalavrasReservadas(palavrasReservadas);
@@ -207,7 +255,11 @@ public class Tela extends javax.swing.JFrame {
         List<String> palavras = getTextCode();
         EstruturaLexica estruturaLexica = al.analisar(compiler, palavras);
         txtCodigo.setText(estruturaLexica.getEstruturaHtml());
-        analiseSemantica(estruturaLexica);
+
+        if (estruturaLexica.getEstruturaTipos().size() > 0) {
+            analiseSemantica(estruturaLexica);
+        }
+
     }
 
     private void analiseSemantica(EstruturaLexica el) {
@@ -250,7 +302,7 @@ public class Tela extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Tela t = new Tela();
-              
+
                 t.setVisible(true);
             }
         });
