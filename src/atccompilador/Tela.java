@@ -95,6 +95,7 @@ public class Tela extends javax.swing.JFrame {
 
     private void definirTeclaAnalise(String tecla) {
         txtCodigo.getInputMap().clear();
+        txtCodigo.getActionMap().clear();
 
         txtCodigo.getInputMap().put(KeyStroke.getKeyStroke(tecla), "AnaliseLexica");
         txtCodigo.getActionMap().put("AnaliseLexica", new AbstractAction() {
