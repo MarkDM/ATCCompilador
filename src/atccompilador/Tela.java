@@ -6,6 +6,7 @@
 package atccompilador;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Time;
@@ -34,7 +35,6 @@ public class Tela extends javax.swing.JFrame {
     Long ultimaVezDigitou = System.currentTimeMillis();
     boolean digitando = false;
     boolean analisando = false;
-
     ArrayList<String> palavrasReservadas = new ArrayList<String>() {
         {
             add("inicio");
@@ -81,11 +81,22 @@ public class Tela extends javax.swing.JFrame {
                 System.out.println("digitou");
 
             }
-            public void keyPressed(KeyEvent e) { }
-            public void keyReleased(KeyEvent e) {}
+
+            public void keyPressed(KeyEvent e) {
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
         });
 
-        txtCodigo.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "AnaliseLexica");
+        definirTeclaAnalise("SPACE");
+
+    }
+
+    private void definirTeclaAnalise(String tecla) {
+        txtCodigo.getInputMap().clear();
+
+        txtCodigo.getInputMap().put(KeyStroke.getKeyStroke(tecla), "AnaliseLexica");
         txtCodigo.getActionMap().put("AnaliseLexica", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -104,6 +115,8 @@ public class Tela extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -113,8 +126,20 @@ public class Tela extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnAddPalavra = new javax.swing.JButton();
         txtPalavraReservada = new javax.swing.JTextField();
+        cbTeclasAnalise = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+
+        jLabel2.setText("Tecla que dispara análise léxica");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SPACE", "F1", "F2", "CTRL" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ATC Compilador");
         setResizable(false);
 
         txtCodigo.setContentType("text/html"); // NOI18N
@@ -140,6 +165,16 @@ public class Tela extends javax.swing.JFrame {
             }
         });
 
+        cbTeclasAnalise.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SPACE", "F1", "F2", "TAB" }));
+        cbTeclasAnalise.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTeclasAnaliseActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Tecla de análise");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,34 +182,40 @@ public class Tela extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPalavraReservada)
+                            .addComponent(btnAddPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addComponent(cbTeclasAnalise, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAddPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPalavraReservada))))
+                            .addComponent(jLabel4))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addGap(7, 7, 7)
+                        .addComponent(cbTeclasAnalise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPalavraReservada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAddPalavra)))
+                        .addComponent(btnAddPalavra))
+                    .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -200,6 +241,15 @@ public class Tela extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Palavra reservada não pode ser vazio!");
         }
     }//GEN-LAST:event_btnAddPalavraActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void cbTeclasAnaliseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTeclasAnaliseActionPerformed
+        System.out.println(cbTeclasAnalise.getSelectedItem());
+        definirTeclaAnalise(cbTeclasAnalise.getSelectedItem().toString());
+    }//GEN-LAST:event_cbTeclasAnaliseActionPerformed
 
     /**
      * Retorna o texto da area de codigo através de expressão regular
@@ -310,7 +360,11 @@ public class Tela extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddPalavra;
+    private javax.swing.JComboBox<String> cbTeclasAnalise;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
