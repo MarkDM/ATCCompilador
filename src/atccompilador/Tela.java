@@ -43,8 +43,12 @@ public class Tela extends javax.swing.JFrame {
             add("entao");
             add("senao");
             add("fimse");
+            add("var");
+            add("escreva");
         }
     };
+
+    ArrayList<String> listaVariaveis = new ArrayList<String>();
 
     public Tela() {
         initComponents();
@@ -78,7 +82,6 @@ public class Tela extends javax.swing.JFrame {
                 ultimaVezDigitou = System.currentTimeMillis();
                 digitando = true;
                 analisando = false;
-                System.out.println("digitou");
 
             }
 
@@ -89,7 +92,7 @@ public class Tela extends javax.swing.JFrame {
             }
         });
 
-        definirTeclaAnalise("SPACE");
+        definirTeclaAnalise("TAB");
 
     }
 
@@ -101,12 +104,33 @@ public class Tela extends javax.swing.JFrame {
         txtCodigo.getActionMap().put("AnaliseLexica", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                obterVariaveis();
                 analiseLexica();
             }
         });
     }
 
+    public void obterVariaveis() {
+        String textoPlano = txtCodigo.getText().toString();
+
+        Pattern p = Pattern.compile("var (\\w(,( )?)?)+", Pattern.DOTALL);
+        String regAux = "";
+        List<String> lista = findAllByRegEx(p, textoPlano);
+
+        for (String s : lista) {
+            regAux = s.toLowerCase().replace("var", "").trim();
+            String[] arrVariaveis = regAux.split(",");
+
+            for (String j : arrVariaveis) {
+
+                System.out.println(j);
+            }
+        }
+
+    }
+
     private void atualizarLista(ArrayList<String> elementos) {
+        dlmPalavrasReservadas.removeAllElements();
         for (int i = 0; i < elementos.size(); i++) {
             dlmPalavrasReservadas.add(i, elementos.get(i));
         }
@@ -129,6 +153,9 @@ public class Tela extends javax.swing.JFrame {
         txtPalavraReservada = new javax.swing.JTextField();
         cbTeclasAnalise = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        lstVariaveis = new javax.swing.JList<>();
 
         jLabel2.setText("Tecla que dispara análise léxica");
 
@@ -148,6 +175,14 @@ public class Tela extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtCodigo);
 
         jList1.setModel(dlmPalavrasReservadas);
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jList1KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jList1KeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(jList1);
 
         txtLog.setBackground(new java.awt.Color(0, 0, 0));
@@ -166,7 +201,7 @@ public class Tela extends javax.swing.JFrame {
             }
         });
 
-        cbTeclasAnalise.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SPACE", "F1", "F2", "TAB" }));
+        cbTeclasAnalise.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TAB", "SPACE", "F1", "F2" }));
         cbTeclasAnalise.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTeclasAnaliseActionPerformed(evt);
@@ -175,6 +210,11 @@ public class Tela extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Tecla de análise");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setText("Variáveis");
+
+        jScrollPane5.setViewportView(lstVariaveis);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -186,14 +226,19 @@ public class Tela extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPalavraReservada)
-                            .addComponent(btnAddPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
+                            .addComponent(btnAddPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbTeclasAnalise, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel4))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel5))
+                                .addGap(97, 97, 97))
+                            .addComponent(txtPalavraReservada, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -205,10 +250,14 @@ public class Tela extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addGap(7, 7, 7)
                         .addComponent(cbTeclasAnalise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPalavraReservada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -224,13 +273,19 @@ public class Tela extends javax.swing.JFrame {
 
     private void btnAddPalavraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPalavraActionPerformed
         // TODO add your handling code here:
-        String palavra = txtPalavraReservada.getText();
+        String palavra = txtPalavraReservada.getText().toLowerCase();
         palavra = palavra.replace(" ", "");
 
         if (!palavra.isEmpty()) {
 
             boolean isNumber = palavra.matches("^-?\\d*([\\.,]\\d+)?$");
             if (!isNumber) {
+
+                if (palavrasReservadas.contains(palavra)) {
+                    JOptionPane.showMessageDialog(this, "Palavra já existe");
+                    return;
+                }
+
                 palavrasReservadas.add(palavra);
                 dlmPalavrasReservadas.clear();
                 atualizarLista(palavrasReservadas);
@@ -251,6 +306,44 @@ public class Tela extends javax.swing.JFrame {
         System.out.println(cbTeclasAnalise.getSelectedItem());
         definirTeclaAnalise(cbTeclasAnalise.getSelectedItem().toString());
     }//GEN-LAST:event_cbTeclasAnaliseActionPerformed
+
+    private void jList1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyTyped
+
+    }//GEN-LAST:event_jList1KeyTyped
+
+    private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            int selectionado = jList1.getSelectedIndex();
+            palavrasReservadas.remove(selectionado);
+            atualizarLista(palavrasReservadas);
+        }
+
+
+    }//GEN-LAST:event_jList1KeyPressed
+
+    public List<String> findAllByRegEx(Pattern p, String txt) {
+        Matcher m = p.matcher(txt);
+        List<String> ret = new ArrayList<>();
+
+        while (m.find()) {
+            ret.add(m.group());
+        }
+
+        return ret;
+    }
+
+    public String findByRegex(Pattern p, String texto) {
+
+        Matcher m = p.matcher(texto);
+        String ret = "";
+
+        if (m.find()) {
+            ret = m.group();
+        }
+
+        return ret;
+
+    }
 
     /**
      * Retorna o texto da area de codigo através de expressão regular
@@ -366,10 +459,13 @@ public class Tela extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JList<String> lstVariaveis;
     private javax.swing.JTextPane txtCodigo;
     private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtPalavraReservada;
