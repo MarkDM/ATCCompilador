@@ -108,7 +108,7 @@ public class AnalisadorLexico {
 
             if (isVariavel) {
                 el.getEstruturaTipos().add(Tipos.VARIAVEL);
-                html += "<span style=\"color:green;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
+                html += "<span style=\"color:black;\">" + ((blankSpace) ? " " + codigo[i] : codigo[i]) + "</span>";
             }
 
             if (isAtribuicao) {

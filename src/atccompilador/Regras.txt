@@ -1,4 +1,3 @@
 1 - O algoritmo deve começar com a palavra reservada INICIO
-2 - O algoritmo deve termina com a palavra reservada FIM
-3 - Um bloco SE deve conter a palavra ENTAO e um FIMSE
-4 - Apos um comando SE e antes de um comando ENTAO só é valido STRINGS, VARIAVEIS e NUMEROS (em outras palavras uma expressão)
+2 - O algoritmo deve terminar com a palavra reservada FIM
+3 - Um bloco SE deve fechar com a palavra ENTAO e um FIMSE

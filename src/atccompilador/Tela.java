@@ -32,6 +32,7 @@ import javax.swing.text.html.StyleSheet;
 public class Tela extends javax.swing.JFrame {
 
     DefaultListModel<String> dlmPalavrasReservadas = new DefaultListModel();
+    DefaultListModel<String> dmlVariaveis = new DefaultListModel();
     Long ultimaVezDigitou = System.currentTimeMillis();
     boolean digitando = false;
     boolean analisando = false;
@@ -111,22 +112,35 @@ public class Tela extends javax.swing.JFrame {
     }
 
     public void obterVariaveis() {
-        String textoPlano = txtCodigo.getText().toString();
 
-        Pattern p = Pattern.compile("var (\\w(,( )?)?)+", Pattern.DOTALL);
-        String regAux = "";
+        String textoPlano = txtCodigo.getText().toString();
+        textoPlano = textoPlano.replaceAll("<[^>]*>", "").trim();
+
+        listaVariaveis.clear();
+
+        Pattern p = Pattern.compile("(?<=var )\\s*(\\w(,( )*)?)+", Pattern.DOTALL);
         List<String> lista = findAllByRegEx(p, textoPlano);
 
         for (String s : lista) {
-            regAux = s.toLowerCase().replace("var", "").trim();
-            String[] arrVariaveis = regAux.split(",");
+            String[] arrVariaveis = s.trim().split(",");
+            System.out.println(s);
 
             for (String j : arrVariaveis) {
-
-                System.out.println(j);
+                listaVariaveis.add(j);
+                
             }
         }
+        
+       
+        atualizarLista(listaVariaveis, dmlVariaveis);
 
+    }
+    
+    private void atualizarLista(ArrayList<String> itens, DefaultListModel<String> modelo){
+        modelo.removeAllElements();
+        for (int i = 0; i < itens.size(); i++) {
+            modelo.add(i, itens.get(i));
+        }
     }
 
     private void atualizarLista(ArrayList<String> elementos) {
@@ -214,6 +228,7 @@ public class Tela extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Variáveis");
 
+        lstVariaveis.setModel(dmlVariaveis);
         jScrollPane5.setViewportView(lstVariaveis);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -303,7 +318,7 @@ public class Tela extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void cbTeclasAnaliseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTeclasAnaliseActionPerformed
-        System.out.println(cbTeclasAnalise.getSelectedItem());
+
         definirTeclaAnalise(cbTeclasAnalise.getSelectedItem().toString());
     }//GEN-LAST:event_cbTeclasAnaliseActionPerformed
 

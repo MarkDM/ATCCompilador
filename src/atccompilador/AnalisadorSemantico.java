@@ -21,15 +21,13 @@ public class AnalisadorSemantico {
     }
 
     public List<String> analisar() {
-        
+
         List<String> erros = new ArrayList<>();
-            boolean disparoSe = false;
-            boolean achoEntao = false;
-            boolean achoFimSe = false;
+        boolean disparoSe = false;
+        boolean achoEntao = false;
+        boolean achoFimSe = false;
 
         try {
-
-            
 
             if (this.tipos.get(0) != Tipos.INICIO) {
                 erros.add("codigo não começa com palavra INICIO!\n\r");
@@ -41,13 +39,27 @@ public class AnalisadorSemantico {
 
             for (int i = 0; i < this.tipos.size(); i++) {
 
-//            if (i == this.tipos.size() - 1)
-//                    break;
+                if (i == this.tipos.size() - 1) {
+                    break;
+                }
+                
+               
+                Tipos atual = this.tipos.get(i);
+                Tipos proximo = this.tipos.get(i + 1);
+
+                List<Tipos> arrProximo = new ArrayList<Tipos>() {
+                    {
+                        add(Tipos.NUMBER);
+                        add(Tipos.STRING);
+                        add(Tipos.VARIAVEL);
+                    }
+                };
+
                 if (this.tipos.get(i) == Tipos.SE) {
                     disparoSe = true;
 
-                    if (this.tipos.get(i + 1) == Tipos.KEY_WORD) {
-                        erros.add("Apos palavra SE não pode vim uma palavra reservada!");
+                    if (!arrProximo.contains(proximo)) {
+                        erros.add("Após a palavra SE não pode vir uma palavra reservada!\n\r");
                     }
                 }
                 if (this.tipos.get(i) == Tipos.ENTAO) {
@@ -69,6 +81,7 @@ public class AnalisadorSemantico {
 
             return erros;
         } catch (Exception e) {
+            e.printStackTrace();
             return erros;
         }
 
